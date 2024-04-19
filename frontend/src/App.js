@@ -42,6 +42,7 @@ function App() {
       .then(userobj => {
         userobj['_id'] = userobj['_id']['$oid'];
         setUser(userobj);
+        console.log(userobj);
       })
       .catch(function (error) {
         console.error(error)
