@@ -65,7 +65,7 @@ def test_get_user_by_email_invalid_email_format(user_controller_returns_user):
 @pytest.mark.unit
 def test_get_user_by_email_first_user(user_controller_returns_first_user):
     """ Tests that the first user gets returned when passing a valid and existing email when multiple ones exist """
-    result = user_controller_returns_first_user.get_user_by_email("viktor@gmail.se")
+    result = user_controller_returns_first_user.get_user_by_email("axel.oj@outlook.com")
     assert result == { "_id": "ABC123", "email": "axel.oj@outlook.com", "firstName": "Axel", "lastName": "Jönsson" }
 
 
