@@ -66,10 +66,15 @@ def test_get_user_by_email_invalid_email_format(user_controller_returns_user):
 @pytest.mark.unit
 def test_get_user_by_email_first_user(user_controller_returns_first_user):
     """ Tests that the first user gets returned when passing a valid and existing email when multiple ones exist """
-    with pytest.warns(UserWarning, match=r"more than one user found with mail"):
     result = user_controller_returns_first_user.get_user_by_email("axel.oj@outlook.com")
     assert result == { "_id": "ABC123", "email": "axel.oj@outlook.com", "firstName": "Axel", "lastName": "Jönsson" }
 
+@pytest.mark.unit
+def test_get_user_by_email_print(capsys, user_controller_returns_first_user):
+    """ Tests that the first user gets returned when passing a valid and existing email when multiple ones exist """
+    user_controller_returns_first_user.get_user_by_email("axel.oj@outlook.com")
+    captured = capsys.readouterr()
+    assert "Error: more than one user found with mail" in captured.out
 
 @pytest.mark.unit
 def test_get_user_by_email_exception(user_controller_returns_exception):
