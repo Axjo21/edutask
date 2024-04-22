@@ -29,8 +29,8 @@ def user_controller_returns_first_user():
         { "_id": "MXVI", "email": "axel.oj@outlook.com", "firstName": "asdl", "lastName": "asdlkn" },
         { "_id": "XVII", "email": "axel.oj@outlook.com", "firstName": "skdal", "lastName": "aslkn" }
         ]
-    user_controller_returns_user = UserController(mocked_dao)
-    return user_controller_returns_user
+    user_controller_returns_first_user = UserController(mocked_dao)
+    return user_controller_returns_first_user
 
 @pytest.fixture
 def user_controller_returns_none():
@@ -66,6 +66,7 @@ def test_get_user_by_email_invalid_email_format(user_controller_returns_user):
 @pytest.mark.unit
 def test_get_user_by_email_first_user(user_controller_returns_first_user):
     """ Tests that the first user gets returned when passing a valid and existing email when multiple ones exist """
+    with pytest.warns(UserWarning, match=r"more than one user found with mail"):
     result = user_controller_returns_first_user.get_user_by_email("axel.oj@outlook.com")
     assert result == { "_id": "ABC123", "email": "axel.oj@outlook.com", "firstName": "Axel", "lastName": "Jönsson" }
 
