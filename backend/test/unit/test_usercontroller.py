@@ -35,7 +35,7 @@ def user_controller_returns_first_user():
 @pytest.fixture
 def user_controller_returns_none():
     mocked_dao = mock.MagicMock()
-    mocked_dao.find.return_value = None
+    mocked_dao.find.return_value = []
     user_controller_returns_none = UserController(mocked_dao)
     return user_controller_returns_none
 
@@ -45,6 +45,8 @@ def user_controller_returns_exception():
     mocked_dao.find.return_value = Exception
     user_controller_returns_exception = UserController(mocked_dao)
     return user_controller_returns_exception
+
+
 
 
 @pytest.mark.unit
@@ -61,7 +63,6 @@ def test_get_user_by_email_invalid_email_format(user_controller_returns_user):
         user_controller_returns_user.get_user_by_email("invalid__email.com")
 
 
-
 @pytest.mark.unit
 def test_get_user_by_email_first_user(user_controller_returns_first_user):
     """ Tests that the first user gets returned when passing a valid and existing email when multiple ones exist """
@@ -76,8 +77,9 @@ def test_get_user_by_email_exception(user_controller_returns_exception):
         user_controller_returns_exception.get_user_by_email("axel.oj@outlook.com")
 
 
-#@pytest.mark.unit
+@pytest.mark.unit
 def test_get_user_by_email_none(user_controller_returns_none):
     """ Tests that None gets returned when passing a valid email """
+    # THIS TESTS FAILS BECAUSE THERE IS NO CONDITIONAL FOR RETURNING NONE WHEN USER DOESN'T EXIST
     result = user_controller_returns_none.get_user_by_email("axel.oj@outlook.com")
     assert result == None
