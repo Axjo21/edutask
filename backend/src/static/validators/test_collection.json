@@ -15,12 +15,6 @@
                 "bsonType": "string",
                 "description": "the email address of a user must be determined",
                 "uniqueItems": true
-            },
-            "tasks": {
-                "bsonType": "array",
-                "items": {
-                    "bsonType": "objectId"
-                }
             }
         }
     }
