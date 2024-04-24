@@ -63,10 +63,14 @@ class DAO:
 
         try:
             # insert the object into the database
+            print("TRYING TO INSERT INTO DATABASE: ", localdata)
             inserted_id = self.collection.insert_one(localdata).inserted_id
-
+            print("AFTER INSERTION", inserted_id)
             # fetch and return the created object
+            print("TRYING TO FIND")
             obj = self.collection.find_one({'_id': inserted_id})
+            print("AFTER FIND", obj)
+            print("RETURNING", self.to_json(obj))
             return self.to_json(obj)
         except Exception as e:
             # forward any pymongo.errors.WriteError that occurs during insert_one

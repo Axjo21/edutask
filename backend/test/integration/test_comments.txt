@@ -1,0 +1,269 @@
+
+
+"""
+
+# DESSA RETURNERAR {} så en bit på vägen, men de 
+@pytest.fixture
+@patch('src.util.dao.pymongo.MongoClient')
+def sut(mongo_db):
+    # Set up a temporary database for testing
+    client = pymongo.MongoClient('mongodb://localhost:27017/')
+    db = client['test_database']
+    mongo_db.return_value.edutask = db #pymongo.MongoClient('mongodb://localhost:27017/dbtest')
+    mocked_dao = DAO(collection_name='test_collection')
+    return mocked_dao  # Provide the fixture value
+    # Teardown: Clean up after the tests
+    #client.drop_database('test_database')
+
+
+
+
+
+@pytest.mark.integration
+def test_dao_create(sut):
+    data = {'name': 'axel', 'email': 'aoj@mail.com'}
+
+    # TOG BORT DESSA, DE GÖR ATT TESTET BLIR ETT ENHETSTEST INTE INTEGRATION
+    #dao.collection.insert_one.return_value.inserted_id = '123'
+    #dao.collection.find_one.return_value = {'_id': '123', **data}
+
+    created_object = sut.create(data)
+
+    assert created_object == {'_id': '123', **data}
+
+
+# DENNA FUNKAR INTE FÖR ATT? KAN INTE CONNECTA TILL DATABASE EFTERSOM DEN INTE ÄR IGÅNG?
+@pytest.mark.integration
+def test_dao_create_new(sut):
+    data = {'name': 'axel', 'email': 'aoj@mail.com'}
+    created_object = sut.create(data)
+    assert created_object == {'_id': '123', **data}
+
+"""
+
+
+
+
+
+
+
+
+
+"""
+@pytest.fixture
+def mongo_db():
+    # Set up an in-memory MongoDB database or use pytest-mongodb fixture if available
+    # For simplicity, assuming you have some mechanism to provide a database instance
+    client = pymongo.MongoClient('mongodb://localhost:27017/dbtest')
+    database = client.edutask
+    return database
+
+@pytest.fixture
+def sut_two(mongo_db):
+    with patch('src.util.dao.pymongo.MongoClient') as mock_mongo_client:
+        mock_mongo_client.return_value.edutask = mongo_db
+        return DAO(collection_name='test_collection')
+
+@pytest.mark.integration
+def test_create_document_two(sut_two):
+    data = {'name': 'axel', 'email': 'aoj@mail.com'}
+
+    created_object = sut_two.create(data)
+
+    assert created_object == {'name': 'axel', 'email': 'aoj@mail.com'}
+"""
+
+
+
+
+
+
+
+"""
+@pytest.fixture
+def mongo_db():
+    # Set up an in-memory MongoDB database or use pytest-mongodb fixture if available
+    # For simplicity, assuming you have some mechanism to provide a database instance
+    client = pymongo.MongoClient('mongodb://localhost:27017/dbtest')
+    database = client.edutask
+    return database
+
+@pytest.fixture
+def sut_two(mongo_db):
+    with patch('src.util.dao.pymongo.MongoClient') as mock_mongo_client:
+        mock_mongo_client.return_value.edutask = mongo_db
+        return DAO(collection_name='test_collection')
+
+@pytest.mark.integration
+def test_create_document_two(sut_two):
+    data = {'name': 'axel', 'email': 'aoj@mail.com'}
+
+    created_object = sut_two.create(data)
+
+    assert created_object == {'name': 'axel', 'email': 'aoj@mail.com'}
+"""
+
+
+# PROBLEMET JUST NU.
+# VI SKA SKAPA EN NY DATABAS, SOM VI SKA TESTA MOT
+# DETTA FÅR VI NOG GÖRA GENOM PATCH
+
+
+# DESSA RETURNERAR {} så en bit på vägen, men de 
+#@pytest.fixture
+#@patch('src.util.dao.pymongo.MongoClient')
+def sut(mongo_db):
+    mongo_db.return_value.edutask = pymongo.MongoClient('mongodb://localhost:27017/dbtest')
+    return DAO(collection_name='test_collection')
+
+#@pytest.mark.integration
+def test_create_document(sut):
+    data = {'name': 'axel', 'email': 'aoj@mail.com'}
+
+    # TOG BORT DESSA, DE GÖR ATT TESTET BLIR ETT ENHETSTEST INTE INTEGRATION
+    #dao.collection.insert_one.return_value.inserted_id = '123'
+    #dao.collection.find_one.return_value = {'_id': '123', **data}
+
+    created_object = sut.create(data)
+
+    assert created_object == {'_id': '123', **data}
+
+
+
+
+
+
+
+# DENNA FUNKAR INTE FÖR ATT? KAN INTE CONNECTA TILL DATABASE EFTERSOM DEN INTE ÄR IGÅNG?
+#@pytest.mark.integration
+def test_create_document_new():
+    dao = DAO(collection_name='test_collection')
+    data = {'name': 'axel', 'email': 'aoj@mail.com'}
+    created_object = dao.create(data)
+    assert created_object == {'_id': '123', **data}
+
+
+
+
+
+# DENNA FIXTUREN OCH TESTET ANVÄNDER EN MOCKAD DATABAS
+# SÅ DETTA BLIR SÅFALL INTE ETT INTEGRATION TEST UTAN ETT UNITTEST
+"""
+@pytest.fixture
+def dao():
+    # Set up DAO for testing with a mocked database
+    with patch('src.util.dao.pymongo.MongoClient') as mock_mongo_client:
+        mock_database = MagicMock()
+        mock_mongo_client.return_value.edutask = mock_database
+        yield DAO(collection_name='test_collection')
+
+@pytest.mark.integration
+def test_create_document(dao):
+    data = {'name': 'axel', 'email': 'aoj@mail.com'}
+
+    # Configure the behavior of insert_one and find_one
+    dao.collection.insert_one.return_value.inserted_id = '123'
+    dao.collection.find_one.return_value = {'_id': '123', **data}
+
+    created_object = dao.create(data)
+
+    assert created_object == {'_id': '123', **data}
+"""
+
+
+
+
+
+
+
+# DENNA ?? VAR FEL MEN PÅ RÄTT VÄG MED NÅGOT BIG KANSKE ??
+"""
+@pytest.mark.integration
+@patch('src.util.dao.pymongo.MongoClient')
+def test_create_document(mock_mongo_client):
+    # Arrange
+    mock_database = MagicMock()
+    mock_mongo_client.return_value.edutask = mock_database
+
+    dao = DAO(collection_name='test_collection')
+
+    data = {'name': 'axel', 'security': '932013', 'email': 'aoj@mail.com'}
+
+    # Act
+    created_object = dao.create(data)
+    print("CREATED OBJECT: ", created_object)
+    # Assert
+    # Verify the creation process
+    assert created_object == {'name': 'axel', 'security': '932013', 'email': 'aoj@mail.com'}
+"""
+
+
+
+"""
+#@patch('src.util.dao.getValidator', autospec=True)
+@patch('src.util.dao.pymongo', autospec=True)
+@pytest.fixture
+def sut(pymongo):
+    """
+    #Sets up a in-memory database. Cleans up the database efter yield.
+"""
+    sut = MongoClient('mongodb://localhost:27017/dbtest')
+    yield sut
+
+    sut.drop_db('dbtest')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@patch('src.util.dao.getValidator', autospec=True)
+@pytest.fixture
+def mongodb():
+    """
+    #Sets up a in-memory database. Cleans up the database efter yield.
+"""
+    # Create a in-memory MongoDB and crete database 'dbtest'
+    mongodb = pymongo.MongoClient('mongodb://localhost:27017/dbtest')
+    yield mongodb
+    # Cleans up the database 'dbtest'
+    mongodb.drop_db('dbtest')
+
+@pytest.fixture
+def data_access_object(mongodb):
+    """
+    #Creates an instance of DAO, pointing to the test database.
+"""
+    # Connect to the database 
+    db = mongodb['dbtest']
+    # Create an instance of DAO 
+    dao = DAO("_db__testing_")
+    return dao
+
+
+
+
+@pytest.mark.integration
+def test_create_document(data_access_object):
+# Define test data
+test_data = {
+    'name': 'Test Document',
+    'is_active': True
+}
+
+# Call the create method of your data access object
+created_document = data_access_object.create(test_data)
+
+# Assert that the created document contains the expected data
+assert created_document['name'] == 'Test Document'
+#assert created_document['is_active'] == True
+
+"""
