@@ -35,6 +35,7 @@ class DAO:
         # create the collection if it does not yet exist
         if collection_name not in database.list_collection_names():
             validator = getValidator(collection_name)
+            print("RETURNING VALIDATOR FROM INIT: ", validator)
             database.create_collection(collection_name, validator=validator)
 
         self.collection = database[collection_name]

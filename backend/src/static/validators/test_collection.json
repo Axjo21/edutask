@@ -6,7 +6,7 @@
             "name": {
                 "bsonType": "string",
                 "description": "the name of a user must be determined"
-            }, 
+            },
             "security": {
                 "bsonType": "string",
                 "description": "the security nr of a user must be determined"
