@@ -20,18 +20,9 @@ describe('Attempting to setup prerequisite', () => {
         })
     })
 
-    beforeEach(function () {
-    // enter the main main page
+    before(function () {
+    // enter the main main page and login
         cy.visit('http://localhost:3000')
-    })
-
-    it('starting out on the landing screen', () => {
-    // make sure the landing page contains a header with "login"
-        cy.get('h1')
-            .should('contain.text', 'Login')
-    })
-
-    it('login to the system with an existing account', () => {
         cy.contains('div', 'Email Address')
             .find('input[type=text]')
             .type(email)
@@ -41,9 +32,34 @@ describe('Attempting to setup prerequisite', () => {
 
         cy.get('h1')
             .should('contain.text', 'Your tasks, ' + name)
-        })
+    })
 
-        after(function () {
+    it('View tasks in detail page', () => {
+        cy.get('h1')
+        .should('contain.text', 'Your tasks, ' + name);
+
+        cy.get('div')
+            .should('have.class', 'container-element')
+            .find('form')
+            .find('input#title')
+            .type('My test item');
+
+        cy.get('div')
+            .should('have.class', 'container-element')
+            .find('form')
+            .find('input#url')
+            .type('visa7811n32jkasd8');
+
+        cy.get('div.container-element form').submit();
+
+        cy.get('.container-element').eq(0)
+            // Find the <a> element inside the first container-element
+            .find('a')
+            // Click on the <a> element
+            .click();
+    })
+
+    after(function () {
         // clean up by deleting the user from the database
         cy.request({
             method: 'DELETE',
