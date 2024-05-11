@@ -61,11 +61,13 @@ describe('Attempting to setup prerequisite', () => {
             .click()
             .type('My new todo item');
         cy.get('form.inline-form input[type="submit"][value="Add"]').click();
-        //cy.get('form').should('have.class', 'inline-form').within(()=>{
-        //    cy.get('input').first().click();
-        //})
         cy.get('ul.todo-list li.todo-item span.editable').contains('My new todo item');
-    })
+    });
+
+    // THIS CREATES A NEW TODO ITEM, IT SHOULDNT. THE ADD BUTTON SHOULD BE DISABLED WHEN NO DESCRIPTION IS ENTERED.
+    it('Click add when no description is entered', () => {
+        cy.get('form.inline-form input[type="submit"][value="Add"]').click();
+    });
 
 
 
