@@ -20,7 +20,7 @@ describe('Attempting to setup prerequisite', () => {
         })
     })
 
-    before(function () {
+    beforeEach(function () {
     // enter the main main page and login
         cy.visit('http://localhost:3000')
         cy.contains('div', 'Email Address')
@@ -32,11 +32,8 @@ describe('Attempting to setup prerequisite', () => {
 
         cy.get('h1')
             .should('contain.text', 'Your tasks, ' + name)
-    })
-
-    it('View tasks in detail page', () => {
-        cy.get('h1')
-        .should('contain.text', 'Your tasks, ' + name);
+            cy.get('h1')
+            .should('contain.text', 'Your tasks, ' + name);
 
         cy.get('div')
             .should('have.class', 'container-element')
@@ -58,6 +55,19 @@ describe('Attempting to setup prerequisite', () => {
             // Click on the <a> element
             .click();
     })
+
+    it('View tasks in detail page', () => {
+        cy.get('input[placeholder="Add a new todo item"]')
+            .click()
+            .type('My new todo item');
+        cy.get('form.inline-form input[type="submit"][value="Add"]').click();
+        //cy.get('form').should('have.class', 'inline-form').within(()=>{
+        //    cy.get('input').first().click();
+        //})
+        cy.get('ul.todo-list li.todo-item span.editable').contains('My new todo item');
+    })
+
+
 
     after(function () {
         // clean up by deleting the user from the database
