@@ -68,6 +68,12 @@ describe('Attempting to setup prerequisite', () => {
         cy.get('@checkerSpan').should('have.class', 'checked');
     });
 
+    it('Toggle from done to active', () => {
+        cy.get('span.checker').should('have.class', 'checked').eq(1).as('checkerSpan');
+        cy.get('@checkerSpan').click();
+        cy.get('@checkerSpan').should('have.class', 'unchecked');
+    });
+
 
 
     after(function () {
