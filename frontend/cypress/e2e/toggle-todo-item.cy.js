@@ -1,5 +1,4 @@
 describe('Attempting to setup prerequisite', () => {
-
     let uid // user id
     let name // name of the user (firstName + ' ' + lastName)
     let email // email of the user
@@ -18,7 +17,7 @@ describe('Attempting to setup prerequisite', () => {
                 email = user.email
             })
         })
-    })
+    });
 
     beforeEach(function () {
     // enter the main main page and login
@@ -54,9 +53,7 @@ describe('Attempting to setup prerequisite', () => {
             .find('a')
             // Click on the <a> element
             .click();
-    });
 
-    it('View tasks in detail page', () => {
         cy.get('input[placeholder="Add a new todo item"]')
             .click()
             .type('My new todo item');
@@ -64,9 +61,11 @@ describe('Attempting to setup prerequisite', () => {
         cy.get('ul.todo-list li.todo-item span.editable').contains('My new todo item');
     });
 
-    // THIS CREATES A NEW TODO ITEM, IT SHOULDNT. THE ADD BUTTON SHOULD BE DISABLED WHEN NO DESCRIPTION IS ENTERED.
-    it('Click add when no description is entered', () => {
-        cy.get('form.inline-form input[type="submit"][value="Add"]').click();
+
+    it('Toggle from active to done', () => {
+        cy.get('span.checker').should('have.class', 'unchecked').eq(1).as('checkerSpan');
+        cy.get('@checkerSpan').click();
+        cy.get('@checkerSpan').should('have.class', 'checked');
     });
 
 
