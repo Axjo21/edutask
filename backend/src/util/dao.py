@@ -38,6 +38,7 @@ class DAO:
             print("RETURNING VALIDATOR FROM INIT: ", validator)
             database.create_collection(collection_name, validator=validator)
 
+        print("SEEMS OK? : ", database[collection_name])
         self.collection = database[collection_name]
 
     def create(self, data: dict):

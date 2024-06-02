@@ -69,7 +69,7 @@ def sut():
         }
     print("VALIDATOR FROM FIXTURE: ", validator)
     """
-    mocked_dao = DAO(collection_name='test_collection')
+    mocked_dao = DAO(collection_name='temp_tester')
 
     yield mocked_dao
 
@@ -77,7 +77,7 @@ def sut():
 
 
 
-
+#1
 @pytest.mark.integration
 def test_dao_create_obj(sut):
     """ Test that dao.create() works as intended with a validated object """
@@ -87,55 +87,7 @@ def test_dao_create_obj(sut):
 
     assert created_object == {'_id':  o_id, **data}
 
-
-@pytest.mark.integration
-def test_dao_create_obj_no_name(sut):
-    """ Test that dao.create() works as intended when no name is passed """
-
-    data = {'security': '1234123', 'email': 'aoj@mail.com'}
-    created_object = sut.create(data)
-    o_id = created_object['_id']
-
-    assert created_object == {'_id':  o_id, **data}
-
-
-@pytest.mark.integration
-def test_dao_create_not_all_required_fields(sut):
-    """ Test that dao.create() returns WriteError when all required fields aren't included"""
-
-    data = {'name': 'axel', 'email': 'aoj@mail.com'}
-    with pytest.raises(Exception):
-        sut.create(data)
-
-
-@pytest.mark.integration
-def test_dao_create_wrong_field(sut):
-    """ Test that dao.create() returns WriteError wrong fields are passed"""
-
-    data = {'name': 'axel', 'wrong_field_1': 'aoe', 'wrong_field_2': 'oiu'}
-    with pytest.raises(Exception):
-        sut.create(data)
-
-
-@pytest.mark.integration
-def test_dao_create_empty(sut):
-    """ Test that dao.create() returns WriteError when empty object is passed"""
-
-    data = {}
-    with pytest.raises(Exception):
-        sut.create(data)
-
-
-@pytest.mark.integration
-def test_dao_create_wrong_bson_type(sut):
-    """ Test that dao.create() returns WriteError when wrong BSON type for field is passed """
-
-    data = {'name': 1234, 'wrong_field_1': 'aoe', 'wrong_field_2': 'oiu'}
-    with pytest.raises(Exception):
-        sut.create(data)
-
-
-
+#2
 # THIS TEST DOESN'T PASS
 # IT SHOULD RAISE EXCEPTION BECAUSE THE EMAIL ALREADY EXISTS IN ANOTHER DOCUMENT IN THE DATABASE
 # AND THE EMAIL IS MARKED AS UNIQUE IN THE VALIDATOR
@@ -148,3 +100,77 @@ def test_dao_create_field_not_unique(sut):
 
     with pytest.raises(Exception):
         sut.create(data)
+
+#3
+@pytest.mark.integration
+def test_dao_create_wrong_bson_type(sut):
+    """ Test that dao.create() returns WriteError when wrong BSON type for field is passed """
+
+    data = {'name': 1234, 'security': 'aoe', 'email': 'aom'}
+    with pytest.raises(Exception):
+        sut.create(data)
+
+
+#4
+@pytest.mark.integration
+def test_dao_create_not_all_required_fields(sut):
+    """ Test that dao.create() returns WriteError when all required fields aren't included"""
+
+    data = {'name': 'axel', 'email': 'aoj@mail.com'}
+    with pytest.raises(Exception):
+        sut.create(data)
+
+#5
+@pytest.mark.integration
+def test_dao_create_field_not_unique_and_not_all_fields_included(sut):
+    """ Test that create method returns WriteError when field isn't unique and not included"""
+
+    data = {'name': 'axel', 'security': '1234123', 'email': 'aoj@mail.com'}
+    sut.create(data)
+
+    with pytest.raises(Exception):
+        sut.create({'name': 'axel', 'security': '1234123'})
+
+#6
+@pytest.mark.integration
+def test_dao_create_wrong_bson_type_and_not_all_fields_included(sut):
+    """ Test that dao.create() returns WriteError when wrong BSON type and not all required fields"""
+
+    data = {'name': 1234, 'security': 'aoe'}
+    with pytest.raises(Exception):
+        sut.create(data)
+
+
+
+
+
+
+
+
+
+
+
+# THE FOLLOWING TESTS WERE CREATED BUT DISCARDED SINCE THEY DID NOT ADHERE TO OUR INITIAL TEST DESIGN:
+
+def test_dao_create_wrong_field(sut):
+    """ Test that dao.create() returns WriteError wrong fields are passed"""
+
+    data = {'name': 'axel', 'wrong_field_1': 'aoe', 'wrong_field_2': 'oiu'}
+    with pytest.raises(Exception):
+        sut.create(data)
+
+def test_dao_create_empty(sut):
+    """ Test that dao.create() returns WriteError when empty object is passed"""
+
+    data = {}
+    with pytest.raises(Exception):
+        sut.create(data)
+
+def test_dao_create_obj_no_name(sut):
+    """ Test that dao.create() works as intended when no name is passed """
+
+    data = {'security': '1234123', 'email': 'aoj@mail.com'}
+    created_object = sut.create(data)
+    o_id = created_object['_id']
+
+    assert created_object == {'_id':  o_id, **data}

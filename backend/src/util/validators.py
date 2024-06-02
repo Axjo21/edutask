@@ -10,7 +10,8 @@ def getValidator(collection_name: str):
     returns:
         validator -- dict in the format of a MongoDB collection validator
     """
+    # BEHÖVDE LÄGGA TILL EN TILL PUNKT HÄR FÖR ATT DET SKULLE FUNKA. BEHÖVDE INTE GÖRA DET FÖRUT DOCK?
     if collection_name not in validators:
-        with open(f'./src/static/validators/{collection_name}.json', 'r') as f:
+        with open(f'../src/static/validators/{collection_name}.json', 'r') as f:
             validators[collection_name] = json.load(f)
     return validators[collection_name]
