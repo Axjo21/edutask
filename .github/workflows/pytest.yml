@@ -27,8 +27,10 @@ jobs:
 
     - name: Unit Tests
       run: |
+      working-directory: backend/test/unit
         python -m pytest -m unit
 
     - name: Integration Tests
       run: |
+      working-directory: backend/test/integration
         python -m pytest -m integration
