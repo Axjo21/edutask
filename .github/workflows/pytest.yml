@@ -22,15 +22,13 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python3 -m pip install --upgrade pip
+        python -m pip install --upgrade pip
         pip install -r backend/requirements.pip
 
     - name: Unit Tests
       run: |
-      working-directory: backend/test/unit
-        python3 -m pytest -m unit
+        python -m pytest -m unit
 
     - name: Integration Tests
       run: |
-      working-directory: backend/test/integration
-        python3 -m pytest -m integration
+        python -m pytest -m integration
