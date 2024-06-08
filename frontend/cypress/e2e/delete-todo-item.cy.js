@@ -61,7 +61,7 @@ describe('Attempting to setup prerequisite', () => {
         cy.get('ul.todo-list li.todo-item span.editable').contains('My new todo item');
     });
 
-
+    // test #3.0
     it('Toggle from active to done', () => {
         cy.get('li.todo-item').eq(1).as('todoItem');
 

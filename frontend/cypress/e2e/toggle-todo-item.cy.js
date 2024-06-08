@@ -61,13 +61,14 @@ describe('Attempting to setup prerequisite', () => {
         cy.get('ul.todo-list li.todo-item span.editable').contains('My new todo item');
     });
 
-
+    // test #2.1
     it('Toggle from active to done', () => {
         cy.get('span.checker').should('have.class', 'unchecked').eq(1).as('checkerSpan');
         cy.get('@checkerSpan').click();
         cy.get('@checkerSpan').should('have.class', 'checked');
     });
 
+    // test #2.2
     it('Toggle from done to active', () => {
         cy.get('span.checker').should('have.class', 'checked').eq(1).as('checkerSpan');
         cy.get('@checkerSpan').click();
